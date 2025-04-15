@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Redefinir senha</title>
+    <link rel="stylesheet" href="{% static 'contas/redefinir.css' %}">
+</head>
+<body>
+    <div class="container">
+        <img src="{% static 'contas/senha.png' %}" alt="Cadeado" class="icon">
+        <h2>Redefinir senha</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="codigo" placeholder="Insira o código" required>
+            <input type="password" name="nova_senha" placeholder="Digite a nova senha" required>
+            <input type="password" name="confirmar_senha" placeholder="Confirmar nova senha" required>
+            <button type="submit">Redefinir</button>
+        </form>
+
+    </div>
+</body>
+</html>
