@@ -1,3 +1,3 @@
-# Projeto_Saude_Facil
+# Tela principal
 
-# Adicionado o Django
+Tela de acesso de médicos e pacientes.
