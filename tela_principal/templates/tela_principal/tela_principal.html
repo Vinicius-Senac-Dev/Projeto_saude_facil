@@ -1,91 +1,19 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Saúde Fácil</title>
+{% extends 'tela_base.html' %}
+{% load static %}
 
-  <!-- Ícones Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% block conteudo %}
+<br>
+<br>
+<br>
 
-  <!-- Estilos CSS -->
-  <link rel="stylesheet" href="static/css/tela_principal.css">
-</head>
-<body>
-
-  <header>
-    <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
-      <div class="menu-toggle" onclick="toggleMenu()">
-        <i class="fas fa-bars"></i>
-      </div>
-    </div>
-
-    <nav id="navMenu">
-      <!-- Menu -->
-      <div class="menu-item">
-        <a href="#">Agenda de Consultas</a>
-        <div class="submenu">
-          <a href="#">Nova Consulta</a>
-          <a href="#">Consultas Pendentes</a>
-        </div>
-      </div>
-      <div class="menu-item">
-        <a href="#">Prescrições e Atestados</a>
-        <div class="submenu">
-          <a href="#">Minhas Prescrições</a>
-          <a href="#">Emitir Atestado</a>
-        </div>
-      </div>
-      <div class="menu-item">
-        <a href="#">Histórico de Consultas</a>
-        <div class="submenu">
-          <a href="#">Últimos 30 dias</a>
-          <a href="#">Buscar por data</a>
-        </div>
-      </div>
-      <div class="menu-item">
-        <a href="#">Gerenciamento de Horários</a>
-        <div class="submenu">
-          <a href="#">Definir Horários</a>
-          <a href="#">Editar Disponibilidade</a>
-        </div>
-      </div>
-      <div class="menu-item">
-        <a href="#">Configurações</a>
-        <div class="submenu">
-          <a href="#">Alterar Senha</a>
-          <a href="#">Preferências</a>
-        </div>
-      </div>
-
-      <!-- Mensagem de boas-vindas -->
-      <div class="welcome-message" style="margin-left: auto;">
-        <p>Bem-vindo(a),<br> Usuário.</p>
-      </div>
-    </nav>
-
-    <div class="icons">
-      <div class="profile-img">
-        <img src="https://via.placeholder.com/150" alt="Perfil">
-      </div>
-    </div>
-  </header>
-
-  <main>
+<main>
     <div class="carousel" id="carousel">
-      <img src="static/media/internacao-hospitalar-telemedicina-morsch.jpg" class="active">
-      <img src="static/media/internação-hospitalar-pai-visita-filho-no-hospital+(2).jpg">
-      <img src="static/media/leito-hospitalar-internacao-telemedicina-morsch.jpg">
+      <img src="{% static 'media/internacao-hospitalar-telemedicina-morsch.jpg' %}" class="active">
+      <img src="{% static 'media/internação-hospitalar-pai-visita-filho-no-hospital+(2).jpg' %}">
+      <img src="{% static 'media/leito-hospitalar-internacao-telemedicina-morsch.jpg' %}">
     </div>
   </main>
 
-  <footer>
-    <div>
-      <p>Saúde Fácil &copy; 2023</p>
-      <p>Todos os direitos reservados.</p>
-    </div>
-  </footer>
-
   <!-- JavaScript -->
-  <script src="static/js/script.js"></script>
-</body>
-</html>
+  <script src="{% static 'js/script.js' %}"></script>
+{% endblock %}

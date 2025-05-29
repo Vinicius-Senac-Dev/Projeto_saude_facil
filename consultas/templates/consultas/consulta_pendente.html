@@ -1,0 +1,41 @@
+{% extends 'tela_base.html' %}
+{% load static %}
+
+{% block conteudo %}
+<div class="background" style="max-width: 700px; margin: 30px auto; border-radius: 10px; background: #f0f4f4; padding: 24px;">
+    <h2 style="text-align:center; color:#319795;">Consultas Pendentes</h2>
+    {% if consultas %}
+        <table style="width:100%; border-collapse:collapse; margin-top:20px;">
+            <thead>
+                <tr style="background:#e6fffa;">
+                    <th style="padding:8px; border-bottom:1px solid #b2f0f0;">Paciente</th>
+                    <th style="padding:8px; border-bottom:1px solid #b2f0f0;">Data</th>
+                    <th style="padding:8px; border-bottom:1px solid #b2f0f0;">Hora</th>
+                    <th style="padding:8px; border-bottom:1px solid #b2f0f0;">Observações</th>
+                    <th style="padding:8px; border-bottom:1px solid #b2f0f0;">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for consulta in consultas %}
+                <tr style="background:#fff;">
+                    <td style="padding:8px; border-bottom:1px solid #e0e0e0;">{{ consulta.paciente.nome }}</td>
+                    <td style="padding:8px; border-bottom:1px solid #e0e0e0;">{{ consulta.data|date:"d/m/Y" }}</td>
+                    <td style="padding:8px; border-bottom:1px solid #e0e0e0;">{{ consulta.hora|time:"H:i" }}</td>
+                    <td style="padding:8px; border-bottom:1px solid #e0e0e0;">{{ consulta.observacoes }}</td>
+                    <td style="padding:8px; border-bottom:1px solid #e0e0e0;">
+                        <form method="post" action="{% url 'cancelar_consulta' consulta.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" style="background:#e74c3c; color:#fff; border:none; border-radius:5px; padding:6px 12px; cursor:pointer;">
+                                Cancelar
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p style="text-align:center; color:#888; margin-top:30px;">Nenhuma consulta pendente encontrada.</p>
+    {% endif %}
+</div>
+{% endblock %}

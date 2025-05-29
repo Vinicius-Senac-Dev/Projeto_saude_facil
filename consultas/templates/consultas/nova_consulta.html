@@ -1,0 +1,40 @@
+{% extends 'tela_base.html' %}
+{% load static %}
+
+{% block conteudo %}
+<br>
+<div class="background">
+    <div class="title">
+        <center><h1>Nova Consulta</h1></center>
+    </div>
+    <div class="border-form">
+        <div class="form-container">
+        <form method="post" action="{% url 'nova_consulta' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <center>
+                <label for="nome">Nome do Paciente:</label>
+                <select name="nome" id="nome" required>
+                <option value="">Selecione um paciente</option>
+                {% for paciente in pacientes %}
+                <option value="{{ paciente.id }}">{{ paciente.nome }}</option>
+                {% endfor %}
+                </select>
+                <br><br>
+                <label for="data">Data da Consulta:</label>
+                <input type="date" name="data" id="data" required>
+                <br><br>
+                <label for="hora">Hora da Consulta:</label>
+                <input type="time" name="hora" id="hora" required>
+                <br><br>
+                <label for="observacoes">Observações:</label>
+                <textarea name="observacoes" id="observacoes" rows="3"></textarea>
+                <br><br>
+                <button  class="button-form" type="submit">Agendar Consulta</button>
+                </center>
+            </div>
+        </form>
+    </div>
+    </div>
+</div>
+{% endblock %}
