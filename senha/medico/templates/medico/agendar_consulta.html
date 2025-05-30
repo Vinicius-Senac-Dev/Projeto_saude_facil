@@ -1,0 +1,251 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Agendar Consulta</title>
+    <style>
+        /* Reset simples */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f8fb;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        /* Menu de navegação */
+        .menu {
+            background-color: #c7f3f6;
+            display: flex;
+            justify-content: space-between; /* Espaça os grupos */
+            align-items: center;
+            padding: 12px 30px;
+            box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+            height: 60px;
+        }
+
+        .menu-links {
+            display: flex;
+            gap: 150px;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .menu-links a {
+            color: #007b8a;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.3s ease;
+        }
+
+        .menu-links a:hover,
+        .menu-links a:focus {
+            color: #004d56;
+            outline: none;
+        }
+
+        .menu-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .menu-icons a img {
+            vertical-align: middle;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+        }
+
+        /* Container principal do formulário */
+        form {
+            max-width: 900px;
+            margin: 30px auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 25px 30px;
+            box-shadow: 0 4px 14px rgb(0 0 0 / 0.1);
+        }
+
+        .content {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Card do médico */
+        .card {
+            border: 1px solid #d1d9dd;
+            border-radius: 10px;
+            padding: 20px;
+            width: 280px;
+            text-align: center;
+            background-color: #e6f7f9;
+            box-shadow: inset 0 0 10px rgb(0 123 138 / 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+        .card:hover {
+            box-shadow: 0 0 15px #007b8a;
+        }
+        .card img {
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid #007b8a;
+        }
+        .card h3 {
+            margin: 0 0 10px;
+            font-size: 1.4rem;
+            color: #004d56;
+        }
+        .card p {
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #006d7b;
+        }
+        .card ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin: 0;
+            text-align: left;
+            color: #134f57;
+            font-size: 0.9rem;
+        }
+
+        /* Calendário e formulário lateral */
+        .calendar {
+            border: 1px solid #d1d9dd;
+            border-radius: 10px;
+            background-color: #f9fcfd;
+            padding: 30px 25px;
+            width: 320px;
+            box-shadow: inset 0 0 8px rgb(0 123 138 / 0.1);
+        }
+        .calendar label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 6px;
+            color: #004d56;
+            font-size: 1rem;
+        }
+        .calendar input[type="datetime-local"],
+        .calendar input[type="text"] {
+            width: 100%;
+            padding: 8px 12px;
+            font-size: 1rem;
+            border: 1.5px solid #a1c8cc;
+            border-radius: 6px;
+            transition: border-color 0.3s ease;
+        }
+        .calendar input[type="datetime-local"]:focus,
+        .calendar input[type="text"]:focus {
+            border-color: #007b8a;
+            outline: none;
+            box-shadow: 0 0 6px #007b8aaa;
+        }
+
+        /* Botão confirmar */
+        .submit-btn {
+            margin-top: 30px;
+            display: block;
+            width: 180px;
+            padding: 12px;
+            background-color: #007b8a;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.25s ease;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .submit-btn:hover,
+        .submit-btn:focus {
+            background-color: #004d56;
+            outline: none;
+        }
+
+        /* Responsividade simples */
+        @media (max-width: 720px) {
+            .content {
+                flex-direction: column;
+                align-items: center;
+            }
+            .card, .calendar {
+                width: 90%;
+            }
+            .menu {
+                flex-wrap: wrap;
+                height: auto;
+                padding: 12px 15px;
+            }
+            .menu-links {
+                justify-content: center;
+                flex-basis: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="menu" role="navigation" aria-label="Menu principal">
+        <div class="menu-links">
+            <a href="#">Agendar</a>
+            <a href="#">Cancelar Consulta</a>
+            <a href="#">Minhas Consultas</a>
+            <a href="#">Histórico Médico</a>
+        </div>
+        <div class="menu-icons">
+            <a href="#" aria-label="Notificações">
+                <img src="{% static 'sino.png' %}" alt="Ícone de notificações" />
+            </a>
+            <a href="#" aria-label="Perfil do usuário">
+                <img src="{% static 'usuario.png' %}" alt="Ícone do usuário" />
+            </a>
+        </div>
+    </nav>
+
+    <main>
+        <form method="POST" novalidate>
+            {% csrf_token %}
+            <section class="content" aria-labelledby="form-titulo">
+                <article class="card" aria-label="Informações do médico">
+                    <img src="{% static 'medico.png' %}" alt="Foto do médico {{ medicos.0.nome }}" />
+                    <h3 id="form-titulo">{{ medicos.0.nome }}</h3>
+                    <p>Formação:</p>
+                    <ul>
+                        {% for linha in medicos.0.formacao.splitlines %}
+                        <li>{{ linha }}</li>
+                        {% endfor %}
+                    </ul>
+                    <input type="hidden" name="medico_id" value="{{ medicos.0.id }}">
+                </article>
+
+                <aside class="calendar" aria-label="Formulário de agendamento">
+                    <label for="data_hora">Escolha a data:</label>
+                    <input type="datetime-local" id="data_hora" name="data_hora" required />
+
+                    <label for="paciente_nome" style="margin-top: 20px;">Seu nome:</label>
+                    <input type="text" id="paciente_nome" name="paciente_nome" required />
+                </aside>
+            </section>
+
+            <button type="submit" class="submit-btn" aria-label="Confirmar agendamento">Confirmar</button>
+        </form>
+    </main>
+</body>
+</html>
