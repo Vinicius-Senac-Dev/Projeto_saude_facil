@@ -4,7 +4,7 @@ Após o login, o médico e pacientes terão suas respectivas telas.
 
 # Medico
 
-Consultas
-Prescrições e Atestados
-Histórico de Consultas
-Gerenciamento de Horários
+Consultas  
+Prescrições e Atestados  
+Histórico de Consultas  
+Gerenciamento de Horários  
