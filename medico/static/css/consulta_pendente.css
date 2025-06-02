@@ -1,0 +1,48 @@
+.background {
+    padding: 20px;
+}
+
+h2 {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.consultas-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.consultas-table thead tr {
+    background: #e6fffa;
+}
+
+.consultas-table th {
+    padding: 8px;
+    border-bottom: 1px solid #b2f0f0;
+    text-align: left;
+}
+
+.consultas-table td {
+    padding: 8px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.consultas-table tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+.cancel-button {
+    background: #e74c3c;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.nenhuma-consulta {
+    text-align: center;
+    color: #888;
+    margin-top: 30px;
+}

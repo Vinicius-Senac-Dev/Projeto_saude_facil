@@ -26,8 +26,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'tela_principal', # Tela principal
-    'consultas', # Consultas
+    'medico', # Tela do Médico
+    'paciente' # Tela do Paciente
 ]
 
 MIDDLEWARE = [

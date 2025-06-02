@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="stylesheet" href="{% static 'css/tela_principal.css' %}">
+  <link rel="stylesheet" href="{% static 'css/nova_consulta.css' %}">
+  <link rel="stylesheet" href="{% static ' css/consulta_pendente.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <title>{% block title %}Saúde Fácil{% endblock %}</title>
+  {% block head %}{% endblock %}
+</head>
+<body>
+
+  <header>
+    <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+      <div class="menu-toggle" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i>
+      </div>
+    </div>
+
+    <nav id="navMenu">
+      <div class="menu-item">
+        <a href="{% url 'tela_principal' %}">Inicio</a>
+      </div>
+      <div class="menu-item">
+        <a href="#" class="menu-item1">Agenda de Consultas</a>
+        <div class="submenu">
+          <a href="{% url 'nova_consulta' %}">Nova Consulta</a>
+          <a href="{% url 'consulta_pendente' %}">Consultas Pendentes</a>
+        </div>
+      </div>
+      <div class="menu-item">
+        <a href="#" class="menu-item2">Prescrições e Atestados</a>
+        <div class="submenu">
+          <a href="#">Prescrições</a>
+          <a href="#">Atestado</a>
+        </div>
+      </div>
+      <div class="menu-item">
+        <a href="#" class="menu-item3">Histórico de Consultas</a>
+        <div class="submenu">
+          <a href="#">Últimos 30 dias</a>
+        </div>
+      </div>
+      <div class="menu-item">
+        <a href="#" class="menu-item4">Gerenciamento</a>
+        <div class="submenu">
+          <a href="#">Editar Disponibilidade</a>
+          <a href="#">Editar Perfil</a>
+        </div>
+      </div>
+
+      <div class="welcome-message" style="margin-left: auto;">
+        <p>Bem-vindo(a), <br>Dr(a) {{ medico.nome }}</p>
+      </div>
+    </nav>
+
+    <div class="icons">
+      <div class="profile-img">
+      {% if medico.foto %}
+      <img src="{{ medico.foto.url }}" alt="Foto de Perfil">
+      {% else %}
+      <img src="{% static 'img/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg' %}" alt="Foto de Perfil">
+      {% endif %}
+      </div>
+    </div>
+  </header>
+
+  {% block conteudo %}{% endblock %}
+
+  <br>
+  <br>
+  <br>
+
+  <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

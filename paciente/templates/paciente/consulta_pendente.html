@@ -1,0 +1,40 @@
+{% extends 'tela_base_medico.html' %}
+{% load static %}
+
+{% block conteudo %}
+<link rel="stylesheet" href="{% static 'paciente/css/consulta_pendente.css' %}">
+<div class="background">
+    <h2>Consultas Pendentes</h2>
+    {% if consultas %}
+        <table class="consultas-table">
+            <thead>
+                <tr>
+                    <th>Médico</th>
+                    <th>Data</th>
+                    <th>Hora</th>
+                    <th>Observações</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for consulta in consultas %}
+                <tr>
+                    <td>{{ consulta.medico.nome }}</td>
+                    <td>{{ consulta.data|date:"d/m/Y" }}</td>
+                    <td>{{ consulta.hora|time:"H:i" }}</td>
+                    <td>{{ consulta.observacoes }}</td>
+                    <td>
+                        <form method="post" action="{% url 'cancelar_consulta' consulta.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="cancel-button">Cancelar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="nenhuma-consulta">Nenhuma consulta pendente encontrada.</p>
+    {% endif %}
+</div>
+{% endblock %}

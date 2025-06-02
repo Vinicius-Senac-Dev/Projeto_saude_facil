@@ -1,0 +1,19 @@
+{% extends 'tela_base_medico.html' %}
+{% load static %}
+
+{% block conteudo %}
+<br>
+<br>
+<br>
+
+<main>
+    <div class="carousel" id="carousel">
+      <img src="{% static 'media/internacao-hospitalar-telemedicina-morsch.jpg' %}" class="active">
+      <img src="{% static 'media/internação-hospitalar-pai-visita-filho-no-hospital+(2).jpg' %}">
+      <img src="{% static 'media/leito-hospitalar-internacao-telemedicina-morsch.jpg' %}">
+    </div>
+  </main>
+
+  <!-- JavaScript -->
+  <script src="{% static 'js/script.js' %}"></script>
+{% endblock %}
