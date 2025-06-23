@@ -1,27 +1,22 @@
+/* ========== BASE ========== */
 body {
   font-family: Arial, sans-serif;
   background-color: #f4fafd;
-  background-image: url("https://cardimed.ch/Bilder/hospital-care-hero-low.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  min-height: 100vh;
 }
 
+/* ========== HEADER ========== */
 header {
   background: linear-gradient(90deg, #4fd1c5 0%, #319795 100%);
-  padding: 12px 24px;
+  padding: 12px 34px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   position: relative;
-  box-shadow: 0 4px 16px rgba(50, 150, 150, 0.08);
+  border-radius: 10px;
 }
 
-
-
-
+/* ========== MENU TOGGLE ========== */
 .menu-toggle {
   display: none;
   font-size: 30px;
@@ -31,13 +26,26 @@ header {
   border: none;
 }
 
+/* ========== NAVIGATION ========== */
 nav {
   display: flex;
-  gap: 18px;
+  gap: 100px;
   flex-wrap: wrap;
   align-items: center;
   transition: max-height 0.3s;
   border-radius: 10px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #155e63;
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
 .menu-item {
@@ -50,27 +58,13 @@ nav {
   transition: background 0.2s;
 }
 
-.menu-item:hover {
-  background-color: #e6fffa;
-}
-
-nav a {
-  text-decoration: none;
-  color: #155e63;
-  font-weight: 600;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  border-radius: 8px;
-}
-
 .menu-item::before {
   font-size: 16px;
   margin-right: 4px;
-  opacity: 0.7;
+  opacity: 1; /* Corrigido de 1.7 para 1 */
 }
 
+/* ========== SUBMENU ========== */
 .submenu {
   display: none;
   position: absolute;
@@ -83,13 +77,6 @@ nav a {
   min-width: 180px;
 }
 
-.submenu a:hover {
-  display: block;
-  background-color: rgb(56, 136, 136);
-  color: #fff;
-  border-radius: 8px;
-}
-
 .submenu a {
   padding: 10px 18px;
   display: flex;
@@ -98,18 +85,26 @@ nav a {
   font-size: 15px;
 }
 
+.submenu a:hover {
+  background-color: rgb(56, 136, 136);
+  color: #fff;
+  border-radius: 8px;
+}
+
 .menu-item:hover .submenu {
   display: block;
 }
 
+/* ========== WELCOME MESSAGE ========== */
 .welcome-message {
   font-size: 15px;
   font-weight: bold;
-  color: #fdfdfd;
+  color: #ffffff;
   margin-left: auto;
   padding-left: 20px;
 }
 
+/* ========== ICONS ========== */
 .icons {
   display: flex;
   gap: 12px;
@@ -117,6 +112,7 @@ nav a {
   margin-left: 16px;
 }
 
+/* ========== PROFILE IMAGE ========== */
 .profile-img {
   width: 50px;
   height: 50px;
@@ -135,12 +131,12 @@ nav a {
   display: block;
 }
 
+/* ========== MAIN & CAROUSEL ========== */
 main {
-  padding: 24px 8px;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex: 1;
+  flex: none;
 }
 
 .carousel {
@@ -169,8 +165,7 @@ main {
   z-index: 1;
 }
 
-
-/* RESPONSIVO */
+/* ========== RESPONSIVE ========== */
 @media (max-width: 900px) {
   .carousel {
     height: 200px;
@@ -201,7 +196,6 @@ main {
     gap: 0;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s;
   }
 
   nav.show {
@@ -224,33 +218,23 @@ main {
   }
 
   .welcome-message {
-    margin-left: 0;
     margin-top: 10px;
     text-align: left;
     padding-left: 0;
   }
-
 
   .icons {
     margin-left: 0;
     margin-top: 10px;
     justify-content: center;
     width: 100%;
-    display: flex;
     gap: 10px;
-    align-items: center;
     padding-bottom: 10px;
   }
 
   .profile-img {
     width: 40px;
     height: 40px;
-  }
-
-  .profile-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
   }
 }
 
@@ -263,7 +247,5 @@ main {
     gap: 6px;
     padding-bottom: 6px;
     justify-content: center;
-
   }
-
 }
