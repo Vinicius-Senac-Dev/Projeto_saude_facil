@@ -1,5 +1,6 @@
 from django.apps import AppConfig
 
-class login(AppConfig):
+
+class HistoricoConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'historico'

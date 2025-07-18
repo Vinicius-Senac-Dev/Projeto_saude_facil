@@ -26,7 +26,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'tela_principal', # Tela principal 
+    'tela_principal',
+    'historico',
+    'tela_login',
 ]
 
 MIDDLEWARE = [
