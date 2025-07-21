@@ -3,13 +3,14 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Saúde Fácil</title>
+  <title>{{ page_title|default:"Saúde Fácil" }}</title>
 
   <!-- Ícones Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <!-- Estilos CSS -->
   <link rel="stylesheet" href="{% static 'css/tela_principal.css' %}">
+  {% block extra_css %}{% endblock %}
 </head>
 <body>
 
@@ -72,11 +73,12 @@
     </nav>
   </header>
 
-  <main>
-    <div class="carousel" id="carousel">
-      <img src="{% static 'media/internacao-hospitalar-telemedicina-morsch.jpg' %}" class="active">
-      <img src="{% static 'media/internação-hospitalar-pai-visita-filho-no-hospital+(2).jpg' %}">
-      <img src="{% static 'media/leito-hospitalar-internacao-telemedicina-morsch.jpg' %}">
+  <main class="content-area">
+    <div class="page-header">
+      <h1>{% block page_title %}{% endblock %}</h1>
+    </div>
+    <div class="content-container">
+      {% block content %}{% endblock %}
     </div>
   </main>
 
@@ -89,5 +91,6 @@
 
   <!-- JavaScript -->
   <script src="{% static 'js/script.js' %}"></script>
+  {% block extra_js %}{% endblock %}
 </body>
 </html>

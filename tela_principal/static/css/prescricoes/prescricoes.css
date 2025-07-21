@@ -1,0 +1,108 @@
+.prescricoes-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.feature-card {
+  transition: transform 0.3s, box-shadow 0.3s;
+  height: 100%;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.feature-icon {
+  font-size: 3rem;
+  color: #1F689C;
+  margin-bottom: 20px;
+}
+
+/* Estilos para o accordion */
+.accordion {
+  margin-top: 20px;
+}
+
+.accordion-item {
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.accordion-header {
+  margin: 0;
+}
+
+.accordion-button {
+  width: 100%;
+  text-align: left;
+  background-color: #f8f9fa;
+  color: #333;
+  font-weight: bold;
+  padding: 15px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  position: relative;
+}
+
+.accordion-button::after {
+  content: "+";
+  position: absolute;
+  right: 15px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.accordion-button.collapsed::after {
+  content: "+";
+}
+
+.accordion-button:not(.collapsed)::after {
+  content: "-";
+}
+
+.accordion-button:hover {
+  background-color: #e9ecef;
+}
+
+.accordion-collapse {
+  display: none;
+}
+
+.accordion-collapse.show {
+  display: block;
+}
+
+.accordion-body {
+  padding: 15px;
+  background-color: white;
+}
+
+.accordion-body ul {
+  padding-left: 20px;
+}
+
+.accordion-body li {
+  margin-bottom: 8px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .col-6 {
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+}
+
+/* JavaScript toggle para o accordion */
+.collapse {
+  display: none;
+}
+
+.collapse.show {
+  display: block;
+}

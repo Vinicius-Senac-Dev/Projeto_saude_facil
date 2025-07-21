@@ -1,0 +1,257 @@
+{% extends 'tela_principal/base_interna.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages_comuns.css' %}">
+<link rel="stylesheet" href="{% static 'css/historico/historico_consultas.css' %}">
+{% endblock %}
+
+{% block page_title %}Histórico de Consultas Realizadas{% endblock %}
+
+{% block content %}
+<div class="historico-container">
+  <div class="doctor-stats">
+    <div class="stat-card">
+      <div class="stat-value">{{ consultas|length }}</div>
+      <div class="stat-label">Consultas Recentes</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">{% now "d/m/Y" %}</div>
+      <div class="stat-label">Data Atual</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">{% if consultas %}{{ consultas.0.especialidade }}{% else %}--{% endif %}</div>
+      <div class="stat-label">Especialidade</div>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <div class="filter-group">
+      <label for="filter-periodo">Período:</label>
+      <select id="filter-periodo" class="form-control form-control-sm">
+        <option value="7">Últimos 7 dias</option>
+        <option value="30" selected>Últimos 30 dias</option>
+        <option value="90">Últimos 3 meses</option>
+        <option value="180">Últimos 6 meses</option>
+        <option value="365">Último ano</option>
+        <option value="custom">Período personalizado</option>
+      </select>
+    </div>
+
+    <div class="filter-group period-selector hidden" id="custom-period">
+      <label for="data-inicio">De:</label>
+      <input type="date" id="data-inicio" class="form-control form-control-sm">
+      <label for="data-fim">Até:</label>
+      <input type="date" id="data-fim" class="form-control form-control-sm">
+    </div>
+
+    <div class="filter-group">
+      <label for="filter-especialidade">Especialidade:</label>
+      <select id="filter-especialidade" class="form-control form-control-sm">
+        <option value="">Todas</option>
+        <option value="cardiologia" selected>Cardiologia</option>
+        <option value="clinica-geral">Clínica Geral</option>
+        <option value="dermatologia">Dermatologia</option>
+        <option value="ortopedia">Ortopedia</option>
+        <option value="pediatria">Pediatria</option>
+      </select>
+    </div>
+    
+    <div class="filter-group">
+      <label for="filter-status">Status:</label>
+      <select id="filter-status" class="form-control form-control-sm">
+        <option value="">Todos</option>
+        <option value="finalizada">Finalizadas</option>
+        <option value="em-andamento">Em andamento</option>
+        <option value="agendada">Agendadas</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="filter-paciente">Paciente:</label>
+      <input type="text" id="filter-paciente" class="form-control form-control-sm" placeholder="Nome do paciente...">
+    </div>
+
+    <div class="filter-group">
+      <button id="btn-filtrar" class="btn btn-sm btn-primary">
+        <i class="fas fa-filter"></i> Filtrar
+      </button>
+      <button id="btn-limpar-filtros" class="btn btn-sm btn-secondary">
+        <i class="fas fa-eraser"></i> Limpar
+      </button>
+    </div>
+  </div>
+
+  {% if consultas %}
+  <div class="historico-timeline">
+    {% for consulta in consultas %}
+    <div class="consulta-card {% if consulta.status == 'Em andamento' %}consulta-ativa{% endif %}">
+      <div class="consulta-date">
+        <div class="date-badge">{{ consulta.data }}</div>
+        <div class="time-badge">{{ consulta.hora }}</div>
+      </div>
+      <div class="consulta-details">
+        <div class="consulta-header">
+          <h3>{{ consulta.especialidade }}</h3>
+          <span class="status-badge status-{{ consulta.status|slugify }}">{{ consulta.status }}</span>
+        </div>
+        <div class="consulta-body">
+          <div class="patient-info">
+            <strong>Paciente:</strong> {{ consulta.paciente }}, {{ consulta.idade }} anos
+          </div>
+          <div class="diagnostico">
+            <strong>Diagnóstico:</strong> {{ consulta.diagnostico }}
+          </div>
+          <div class="consulta-actions">
+            <button class="btn btn-sm btn-outline-primary btn-details" data-id="{{ consulta.id }}">
+              <i class="fas fa-clipboard-list"></i> Detalhes / Prontuário
+            </button>
+            <button class="btn btn-sm btn-outline-secondary btn-prescription" data-id="{{ consulta.id }}">
+              <i class="fas fa-prescription"></i> Prescrições
+            </button>
+            {% if consulta.status == 'Em andamento' %}
+            <button class="btn btn-sm btn-success btn-continue" data-id="{{ consulta.id }}">
+              <i class="fas fa-stethoscope"></i> Continuar Atendimento
+            </button>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Modal de detalhes da consulta -->
+  <div class="modal" id="modalConsultaDetails">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Prontuário do Paciente</h3>
+        <span class="close">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="prontuario-tabs">
+          <button class="tab-button active" data-tab="consulta-atual">Consulta Atual</button>
+          <button class="tab-button" data-tab="historico-paciente">Histórico do Paciente</button>
+          <button class="tab-button" data-tab="exames">Exames</button>
+        </div>
+        
+        <div class="tab-content active" id="consulta-atual">
+          <div class="consulta-details-full">
+            <div class="info-group">
+              <div class="info-label">Data:</div>
+              <div class="info-value" id="detail-date">10/04/2025</div>
+            </div>
+            <div class="info-group">
+              <div class="info-label">Hora:</div>
+              <div class="info-value" id="detail-time">10:30</div>
+            </div>
+            <div class="info-group">
+              <div class="info-label">Paciente:</div>
+              <div class="info-value" id="detail-patient">João Silva</div>
+            </div>
+            <div class="info-group">
+              <div class="info-label">Idade:</div>
+              <div class="info-value" id="detail-age">45 anos</div>
+            </div>
+            <div class="info-group">
+              <div class="info-label">Especialidade:</div>
+              <div class="info-value" id="detail-specialty">Cardiologia</div>
+            </div>
+            <div class="info-group">
+              <div class="info-label">Diagnóstico:</div>
+              <div class="info-value" id="detail-diagnosis">Hipertensão arterial</div>
+            </div>
+            <div class="info-group">
+              <div class="info-label">Sintomas relatados:</div>
+              <div class="info-value" id="detail-symptoms">Dor de cabeça frequente, tontura ao levantar-se rapidamente</div>
+            </div>
+            <div class="info-group">
+              <div class="info-label">Exames solicitados:</div>
+              <div class="info-value" id="detail-exams">Holter 24h, Ecocardiograma, Teste ergométrico</div>
+            </div>
+            <div class="info-group">
+              <div class="info-label">Observações:</div>
+              <div class="info-value" id="detail-observations">Paciente com histórico familiar de problemas cardíacos. Pressão arterial elevada (150/95 mmHg). Recomendado controle da dieta e atividade física moderada.</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="tab-content" id="historico-paciente">
+          <div class="historico-paciente-lista">
+            <h4>Consultas Anteriores</h4>
+            <ul class="consultas-anteriores">
+              <li>
+                <div class="consulta-anterior-data">15/01/2025</div>
+                <div class="consulta-anterior-info">
+                  <strong>Diagnóstico:</strong> Hipertensão arterial estágio 1
+                  <br>
+                  <strong>Médico:</strong> Dr. Felipe Costa (Cardiologia)
+                </div>
+              </li>
+              <li>
+                <div class="consulta-anterior-data">20/10/2024</div>
+                <div class="consulta-anterior-info">
+                  <strong>Diagnóstico:</strong> Check-up de rotina
+                  <br>
+                  <strong>Médico:</strong> Dra. Mariana Santos (Clínica Geral)
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="tab-content" id="exames">
+          <div class="exames-paciente">
+            <h4>Resultados de Exames</h4>
+            <table class="exames-table">
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Exame</th>
+                  <th>Resultado</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>20/01/2025</td>
+                  <td>Hemograma completo</td>
+                  <td>Normal</td>
+                  <td><button class="btn btn-sm btn-outline-primary">Ver</button></td>
+                </tr>
+                <tr>
+                  <td>18/01/2025</td>
+                  <td>Teste ergométrico</td>
+                  <td>Alterado</td>
+                  <td><button class="btn btn-sm btn-outline-primary">Ver</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="btn-editar-prontuario">Editar Prontuário</button>
+        <button class="btn btn-success" id="btn-nova-prescricao">Nova Prescrição</button>
+        <button class="btn btn-secondary" id="btn-fechar-detalhes">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  {% else %}
+  <div class="alert alert-info">
+    <p>Não foram encontradas consultas no histórico.</p>
+  </div>
+  {% endif %}
+
+  <div class="pagination-container">
+    <button class="btn btn-sm btn-secondary" disabled>Anterior</button>
+    <span class="page-indicator">Página 1 de 1</span>
+    <button class="btn btn-sm btn-secondary" disabled>Próxima</button>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/historico/historico_consultas.js' %}"></script>
+{% endblock %}

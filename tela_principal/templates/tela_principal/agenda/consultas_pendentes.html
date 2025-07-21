@@ -1,0 +1,128 @@
+{% extends 'tela_principal/base_interna.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages_comuns.css' %}">
+<link rel="stylesheet" href="{% static 'css/agenda/consultas_pendentes.css' %}">
+{% endblock %}
+
+{% block page_title %}Consultas Pendentes{% endblock %}
+
+{% block content %}
+<div class="consultas-container">
+  {% if consultas %}
+  <table class="data-table consultas-table">
+    <thead>
+      <tr>
+        <th>Data</th>
+        <th>Hora</th>
+        <th>Especialidade</th>
+        <th>Médico</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for consulta in consultas %}
+      <tr>
+        <td>{{ consulta.data }}</td>
+        <td>{{ consulta.hora }}</td>
+        <td>{{ consulta.especialidade }}</td>
+        <td>{{ consulta.medico }}</td>
+        <td class="acoes">
+          <button class="btn btn-sm btn-secondary consulta-info" data-id="{{ consulta.id }}">
+            <i class="fas fa-info-circle"></i> Detalhes
+          </button>
+          <button class="btn btn-sm btn-danger consulta-cancelar" data-id="{{ consulta.id }}">
+            <i class="fas fa-times-circle"></i> Cancelar
+          </button>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Modal de detalhes -->
+  <div class="modal" id="modalDetalhes">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Detalhes da Consulta</h3>
+        <span class="close">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="detalhe-item">
+          <span class="label">Data:</span>
+          <span class="valor" id="detalhe-data"></span>
+        </div>
+        <div class="detalhe-item">
+          <span class="label">Hora:</span>
+          <span class="valor" id="detalhe-hora"></span>
+        </div>
+        <div class="detalhe-item">
+          <span class="label">Especialidade:</span>
+          <span class="valor" id="detalhe-especialidade"></span>
+        </div>
+        <div class="detalhe-item">
+          <span class="label">Médico:</span>
+          <span class="valor" id="detalhe-medico"></span>
+        </div>
+        <div class="detalhe-item">
+          <span class="label">Local:</span>
+          <span class="valor">Unidade Central - Av. Principal, 123</span>
+        </div>
+        <div class="detalhe-item">
+          <span class="label">Observações:</span>
+          <span class="valor">Comparecer com 15 minutos de antecedência. Trazer documentos pessoais e cartão do convênio.</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="fechar-modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de cancelamento -->
+  <div class="modal" id="modalCancelar">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Cancelar Consulta</h3>
+        <span class="close">&times;</span>
+      </div>
+      <div class="modal-body">
+        <p>Tem certeza que deseja cancelar esta consulta?</p>
+        <div class="alert alert-warning">
+          <p>
+            <i class="fas fa-exclamation-triangle"></i> Atenção: O cancelamento deve ser feito com pelo menos 24 horas de antecedência para evitar taxas administrativas.
+          </p>
+        </div>
+        <div class="form-group">
+          <label for="motivo-cancelamento">Motivo do cancelamento:</label>
+          <textarea id="motivo-cancelamento" class="form-control" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" id="confirmar-cancelamento">Confirmar Cancelamento</button>
+        <button class="btn btn-secondary" id="fechar-cancelamento">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  {% else %}
+  <div class="alert alert-info">
+    <p>Você não possui consultas pendentes.</p>
+  </div>
+  {% endif %}
+
+  <div class="actions-container mt-4">
+    <a href="{% url 'nova_consulta' %}" class="btn btn-primary">
+      <i class="fas fa-plus-circle"></i> Nova Consulta
+    </a>
+    <a href="{% url 'agenda_consultas' %}" class="btn btn-secondary">
+      <i class="fas fa-calendar"></i> Voltar para Agenda
+    </a>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/agenda/consultas_pendentes.js' %}"></script>
+{% endblock %}

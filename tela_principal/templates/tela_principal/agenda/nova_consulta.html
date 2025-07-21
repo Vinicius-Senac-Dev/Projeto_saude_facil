@@ -1,0 +1,102 @@
+{% extends 'tela_principal/base_interna.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages_comuns.css' %}">
+<link rel="stylesheet" href="{% static 'css/agenda/nova_consulta.css' %}">
+{% endblock %}
+
+{% block page_title %}Nova Consulta{% endblock %}
+
+{% block content %}
+<div class="form-container">
+  <form class="appointment-form">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="especialidade">Especialidade</label>
+      <select id="especialidade" class="form-control" required>
+        <option value="">Selecione uma especialidade</option>
+        {% for especialidade in especialidades %}
+        <option value="{{ especialidade }}">{{ especialidade }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="medico">Médico</label>
+      <select id="medico" class="form-control" required disabled>
+        <option value="">Selecione um médico</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Selecione uma data e horário disponíveis:</label>
+      <div class="calendar-selection">
+        <div class="date-picker">
+          <div class="month-selector">
+            <button type="button" id="prev-month" class="btn-month">&lt;</button>
+            <span id="current-month">Julho 2025</span>
+            <button type="button" id="next-month" class="btn-month">&gt;</button>
+          </div>
+          <div class="calendar">
+            <div class="weekdays">
+              <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
+            </div>
+            <div class="days" id="calendar-days">
+              <!-- Os dias serão preenchidos via JavaScript -->
+            </div>
+          </div>
+        </div>
+
+        <div class="time-slots">
+          <h4>Horários Disponíveis</h4>
+          <div class="time-slot-container" id="time-slots">
+            <p class="no-slots">Selecione uma data para ver os horários disponíveis</p>
+            <!-- Os horários serão preenchidos via JavaScript -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="motivo">Motivo da consulta</label>
+      <textarea id="motivo" class="form-control" rows="3" placeholder="Descreva brevemente o motivo da consulta"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Convênio</label>
+      <div class="radio-group">
+        <label>
+          <input type="radio" name="convenio" value="sus" checked> SUS
+        </label>
+        <label>
+          <input type="radio" name="convenio" value="particular"> Particular
+        </label>
+        <label>
+          <input type="radio" name="convenio" value="plano"> Plano de Saúde
+        </label>
+      </div>
+    </div>
+
+    <div id="plano-container" class="form-group hidden">
+      <label for="plano">Plano de Saúde</label>
+      <select id="plano" class="form-control">
+        <option value="">Selecione o plano</option>
+        <option value="amil">Amil</option>
+        <option value="unimed">Unimed</option>
+        <option value="bradesco">Bradesco Saúde</option>
+        <option value="sulamerica">SulAmérica</option>
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Agendar Consulta</button>
+      <a href="{% url 'agenda_consultas' %}" class="btn btn-secondary">Cancelar</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/agenda/nova_consulta.js' %}"></script>
+{% endblock %}

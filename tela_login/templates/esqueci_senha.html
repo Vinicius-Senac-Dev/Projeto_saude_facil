@@ -11,10 +11,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'login.css' %}">
-    <title>login</title>
+    <title>Recuperar Senha</title>
 </head>
 <body>
-    <h1 class="texto">Login</h1>
+    <h1 class="texto">Recuperar Senha</h1>
     
     {% if messages %}
     <div class="mensagens">
@@ -31,15 +31,14 @@
             {% csrf_token %}
             <div class="area_input">
                 <input class="area_texto" name="username_cpf" type="text" placeholder="Seu usuário ou CPF" required>
-                <input class="area_texto" name="password" type="password" placeholder="Sua senha" required>
+                <input class="area_texto" name="email" type="email" placeholder="Seu e-mail cadastrado" required>
             </div>
             
             <div class="link">
-                <a class="texto_link" href="{% url 'esqueci_senha' %}">Esqueceu a senha?</a>
+                <a class="texto_link" href="{% url 'login' %}">Voltar para o login</a>
             </div>
             <div class="area_botao">
-                <button type="submit" class="botao">Entrar</button>
-                <a href="#" class="botao">Cadastrar</a>
+                <button type="submit" class="botao">Enviar</button>
             </div>
         </form>
     </div>

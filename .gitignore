@@ -1,2 +1,55 @@
 Projeto-PI/
+
+# Ambientes virtuais Python
 venv/
+env/
+ENV/
+virtualenv/
+.env
+.venv
+.python-version
+
+# Bytecode Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Arquivos de banco de dados
+db.sqlite3-journal
+*.log
+
+# Arquivos gerados pelo Django
+.static_storage/
+.media/
+media/
+static/
+!*/static/
+!*/media/
+
+# Arquivos de configuração local
+local_settings.py
+*.env
+.env.*
+
+# Logs e arquivos temporários
+*.log
+*.pot
+*.pyc
+local_settings.py
+.coverage
+htmlcov/
+
+# Arquivos do VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Arquivos específicos do sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini

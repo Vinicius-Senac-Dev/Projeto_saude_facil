@@ -1,0 +1,147 @@
+{% extends 'tela_principal/base_interna.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages_comuns.css' %}">
+<link rel="stylesheet" href="{% static 'css/prescricoes/emitir_atestado.css' %}">
+{% endblock %}
+
+{% block page_title %}Emitir Atestado{% endblock %}
+
+{% block content %}
+<div class="atestado-container">
+  <div class="card mb-4">
+    <div class="card-header">
+      <h3>Solicitar Atestado Médico</h3>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i>
+        <p>Você pode solicitar atestados para consultas realizadas nos últimos 30 dias. A emissão está sujeita à aprovação médica.</p>
+      </div>
+      
+      <form class="atestado-form">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="consulta">Selecione a consulta:</label>
+          <select id="consulta" class="form-control" required>
+            <option value="">Escolha uma consulta recente</option>
+            <option value="1">10/07/2025 - Dr. Ricardo Santos - Clínica Geral</option>
+            <option value="2">22/06/2025 - Dr. Carlos Silva - Cardiologia</option>
+            <option value="3">05/06/2025 - Dra. Ana Pereira - Dermatologia</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="tipo-atestado">Tipo de Atestado:</label>
+          <select id="tipo-atestado" class="form-control" required>
+            <option value="">Selecione o tipo de atestado</option>
+            <option value="comparecimento">Comparecimento à consulta</option>
+            <option value="afastamento">Afastamento de atividades</option>
+            <option value="acompanhante">Acompanhamento de paciente</option>
+          </select>
+        </div>
+        
+        <div id="afastamento-container" class="hidden">
+          <div class="form-group">
+            <label for="dias-afastamento">Dias de afastamento:</label>
+            <input type="number" id="dias-afastamento" class="form-control" min="1" max="30">
+          </div>
+          
+          <div class="form-group">
+            <label for="data-inicio">Data de início:</label>
+            <input type="date" id="data-inicio" class="form-control">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="finalidade">Finalidade do atestado:</label>
+          <select id="finalidade" class="form-control" required>
+            <option value="">Selecione a finalidade</option>
+            <option value="trabalho">Justificativa para trabalho</option>
+            <option value="escola">Justificativa para escola</option>
+            <option value="outro">Outro motivo</option>
+          </select>
+        </div>
+        
+        <div id="outro-finalidade" class="form-group hidden">
+          <label for="outra-finalidade">Especifique a finalidade:</label>
+          <input type="text" id="outra-finalidade" class="form-control">
+        </div>
+        
+        <div class="form-group">
+          <label for="observacoes">Observações adicionais:</label>
+          <textarea id="observacoes" class="form-control" rows="3" placeholder="Informe detalhes adicionais para o médico, caso necessário"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label>Método de recebimento:</label>
+          <div class="radio-group">
+            <label>
+              <input type="radio" name="recebimento" value="email" checked> E-mail
+            </label>
+            <label>
+              <input type="radio" name="recebimento" value="download"> Download no sistema
+            </label>
+            <label>
+              <input type="radio" name="recebimento" value="ambos"> Ambos
+            </label>
+          </div>
+        </div>
+        
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Solicitar Atestado</button>
+          <a href="{% url 'prescricoes' %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <div class="card">
+    <div class="card-header">
+      <h3>Atestados Solicitados</h3>
+    </div>
+    <div class="card-body">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Data da Solicitação</th>
+            <th>Médico</th>
+            <th>Tipo</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>15/07/2025</td>
+            <td>Dr. Ricardo Santos</td>
+            <td>Comparecimento</td>
+            <td><span class="status-badge approved">Aprovado</span></td>
+            <td>
+              <button class="btn btn-sm btn-primary">
+                <i class="fas fa-download"></i> Baixar
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>20/07/2025</td>
+            <td>Dra. Ana Pereira</td>
+            <td>Afastamento</td>
+            <td><span class="status-badge pending">Em análise</span></td>
+            <td>
+              <button class="btn btn-sm btn-secondary" disabled>
+                Aguardando
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/prescricoes/emitir_atestado.js' %}"></script>
+{% endblock %}

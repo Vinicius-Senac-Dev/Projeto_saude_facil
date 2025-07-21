@@ -1,0 +1,197 @@
+{% extends 'tela_principal/tela_principal.html' %}
+{% load static %}
+
+{% block title %}Histórico de Consultas - Saúde Fácil{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/historico/historico_consultas.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="historico-container">
+  <h2>Histórico de Consultas</h2>
+  
+  <!-- Barra de Filtros -->
+  <div class="filter-bar">
+    <div class="filter-group">
+      <label for="search-doctor">Médico</label>
+      <input type="text" id="search-doctor" placeholder="Nome do médico...">
+    </div>
+    
+    <div class="filter-group">
+      <label for="specialty">Especialidade</label>
+      <select id="specialty">
+        <option value="">Todas</option>
+        <option value="cardiologia">Cardiologia</option>
+        <option value="dermatologia">Dermatologia</option>
+        <option value="ortopedia">Ortopedia</option>
+        <option value="pediatria">Pediatria</option>
+        <option value="psiquiatria">Psiquiatria</option>
+        <!-- Mais especialidades podem ser adicionadas -->
+      </select>
+    </div>
+    
+    <div class="filter-group">
+      <label>Período</label>
+      <div class="period-selector">
+        <input type="date" id="date-from">
+        <span>até</span>
+        <input type="date" id="date-to">
+      </div>
+    </div>
+    
+    <div class="filter-group">
+      <button class="btn btn-primary">Filtrar</button>
+    </div>
+  </div>
+  
+  <!-- Timeline de Consultas -->
+  <div class="historico-timeline">
+    {% if consultas %}
+      {% for consulta in consultas %}
+        <div class="consulta-card">
+          <div class="consulta-date">
+            <div class="date-badge">{{ consulta.data }}</div>
+            <div class="time-badge">{{ consulta.hora }}</div>
+          </div>
+          <div class="consulta-details">
+            <div class="consulta-header">
+              <div>
+                <h3>Consulta de {{ consulta.especialidade }}</h3>
+                <span class="doctor-name">{{ consulta.medico }}</span>
+              </div>
+              <span class="consulta-status">{{ consulta.status|default:"Finalizada" }}</span>
+            </div>
+            
+            <div class="diagnostico">
+              <strong>Diagnóstico:</strong> {{ consulta.diagnostico }}
+            </div>
+            
+            <div class="consulta-actions">
+              <button class="btn btn-outline-primary ver-detalhes" data-id="{{ consulta.id }}">Ver detalhes</button>
+              <button class="btn btn-outline-secondary ver-prescricoes" data-id="{{ consulta.id }}">Prescrições</button>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="empty-state">
+        <p>Nenhuma consulta encontrada no histórico.</p>
+        <p>As consultas realizadas serão exibidas aqui assim que o médico registrar os dados.</p>
+      </div>
+    {% endif %}
+  </div>
+  
+  <!-- Paginação -->
+  <div class="pagination-container">
+    <button class="btn btn-outline-secondary" id="prev-page" disabled>Anterior</button>
+    <span class="page-indicator">Página 1 de 3</span>
+    <button class="btn btn-outline-secondary" id="next-page">Próximo</button>
+  </div>
+</div>
+
+<!-- Modal de Detalhes da Consulta -->
+<div id="detalhesModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Detalhes da Consulta</h3>
+      <span class="close">&times;</span>
+    </div>
+    <div class="modal-body">
+      <div class="consulta-details-full" id="detalhes-consulta-content">
+        <!-- O conteúdo será carregado com dados reais do médico -->
+        <div class="loading-indicator">
+          <p>Carregando informações da consulta...</p>
+        </div>
+      </div>
+        
+        <!-- Os detalhes reais do médico serão inseridos dinamicamente -->
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline-secondary" id="fechar-detalhes">Fechar</button>
+      <button class="btn btn-primary" id="ver-receita">Ver Receita</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/historico/historico_consultas.js' %}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Modal functions
+    const modal = document.getElementById("detalhesModal");
+    const btns = document.querySelectorAll(".ver-detalhes");
+    const span = document.querySelector(".close");
+    const closeBtn = document.getElementById("fechar-detalhes");
+
+    // Open modal
+    btns.forEach(btn => {
+      btn.onclick = function() {
+        const consultaId = this.getAttribute('data-id');
+        const detalhesContent = document.getElementById('detalhes-consulta-content');
+        
+        // Mostrar indicador de carregamento
+        detalhesContent.innerHTML = '<div class="loading-indicator"><p>Carregando informações da consulta...</p></div>';
+        modal.style.display = "block";
+        
+        // Em uma implementação real, faríamos uma chamada AJAX para buscar os dados do médico
+        // fetch(`/api/consultas/${consultaId}/detalhes/`)
+        //   .then(response => response.json())
+        //   .then(data => {
+        //     // Preencher o modal com os dados reais do médico
+        //     renderDetalhesConsulta(data);
+        //   });
+      }
+    });
+
+    // Close modal
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+    
+    closeBtn.onclick = function() {
+      modal.style.display = "none";
+    }
+
+    // Close when clicking outside
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+    
+    // Pagination functions
+    const prevBtn = document.getElementById('prev-page');
+    const nextBtn = document.getElementById('next-page');
+    const pageIndicator = document.querySelector('.page-indicator');
+    let currentPage = 1;
+    const totalPages = 1; // Será atualizado quando houver dados reais
+    
+    function updatePagination() {
+      pageIndicator.textContent = `Página ${currentPage} de ${totalPages}`;
+      prevBtn.disabled = (currentPage === 1);
+      nextBtn.disabled = (currentPage === totalPages);
+    }
+    
+    updatePagination();
+    
+    prevBtn.addEventListener('click', function() {
+      if (currentPage > 1) {
+        currentPage--;
+        updatePagination();
+        // Buscar dados da página anterior
+      }
+    });
+    
+    nextBtn.addEventListener('click', function() {
+      if (currentPage < totalPages) {
+        currentPage++;
+        updatePagination();
+        // Buscar dados da próxima página
+      }
+    });
+  });
+</script>
+{% endblock %}

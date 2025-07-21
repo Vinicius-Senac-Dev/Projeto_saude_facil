@@ -11,7 +11,8 @@
     --cor-borda: #0A3637;
     --fonte-inder: "Inder", sans-serif;
     --cor-letra-botao: #FFFFFF;
-    
+    --cor-sucesso: #4caf50;
+    --cor-erro: #f44336;
     
 }
 
@@ -87,6 +88,29 @@ body{
     color: var(--cor-letra-botao);
     padding: 0.5em;
     border-radius: 5px;
+}
+
+.mensagens {
+    width: 80%;
+    max-width: 500px;
+    margin: 10px auto;
+}
+
+.mensagem {
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    font-family: var(--fonte-inria);
+    color: white;
+    text-align: center;
+}
+
+.mensagem.success {
+    background-color: var(--cor-sucesso);
+}
+
+.mensagem.error {
+    background-color: var(--cor-erro);
 }
 
 .img{
