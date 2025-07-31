@@ -1,0 +1,120 @@
+/* *{
+    margin: 0;
+    padding: 0;
+}
+
+:root{
+    --cor-de-fundo:#EBEBEB;
+    --cor-login: #DEF0F0;
+    --cor-botao: #1F689C;
+    --fonte-inria: "Inria Sans", sans-serif;
+    --cor-borda: #0A3637;
+    --fonte-inder: "Inder", sans-serif;
+    --cor-letra-botao: #FFFFFF;
+    --cor-sucesso: #4caf50;
+    --cor-erro: #f44336;
+    
+}
+
+
+body{
+    background-color: var(--cor-de-fundo);
+}
+
+.texto{
+    font-size: 24px;
+    font-family: var(--fonte-inria);
+    font-weight: 700;
+    text-align: center; 
+    margin: 10em;   
+}
+
+
+
+.area_login{
+    width: 400px;
+    height: 300px;
+    background-color: var(--cor-login);
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%);
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 10px;
+    border-color: var(--cor-borda); 
+    text-align: center;
+}
+
+.area_input{
+    margin: 4em 0 0;
+}
+
+
+.area_texto{
+    width: 288px;
+    height: 37px;
+    border-width: 1px;
+    border-radius: 5px;
+    padding: 0.3em;
+    margin: 0.5em;
+    
+}
+
+.link{
+    text-align: left;
+    margin-left: 3.3em;
+}
+
+.texto_link{
+   font-size: 18px; 
+   font-family: var(--fonte-inria);
+   color: var(--cor-botao);
+   text-decoration: none;
+   
+}
+
+.area_botao{
+    margin: 2em;
+    display: flex;
+    justify-content: center;
+    gap: 3em;
+}
+
+.botao{
+    background-color: var(--cor-botao);
+    text-decoration: none;
+    font-family: var(--fonte-inder);
+    color: var(--cor-letra-botao);
+    padding: 0.5em;
+    border-radius: 5px;
+}
+
+.mensagens {
+    width: 80%;
+    max-width: 500px;
+    margin: 10px auto;
+}
+
+.mensagem {
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    font-family: var(--fonte-inria);
+    color: white;
+    text-align: center;
+}
+
+.mensagem.success {
+    background-color: var(--cor-sucesso);
+}
+
+.mensagem.error {
+    background-color: var(--cor-erro);
+}
+
+.img{
+    display: flex;
+    justify-content: right;
+    margin: 30em;
+} */
