@@ -19,9 +19,9 @@
       <div class="menu-toggle" onclick="toggleMenu()">
         <i class="fas fa-bars"></i>
       </div>
-      
-      <div class="logo">Saúde Fácil</div>
-      
+
+      <div class="logo"><a href="#">Saúde Fácil</a></div>
+
       <div class="icons">
         <div class="profile-img">
           <img src="https://via.placeholder.com/150" alt="Perfil">
@@ -72,6 +72,18 @@
       </div>
     </nav>
   </header>
+
+  <!-- Área para mensagens do Django -->
+  {% if messages %}
+  <div class="messages-container">
+    {% for message in messages %}
+      <div class="message {{ message.tags }}">
+        <span class="message-text">{{ message }}</span>
+        <button class="close-message" onclick="closeMessage(this)">&times;</button>
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
 
   <main class="content-area">
     <div class="page-header">

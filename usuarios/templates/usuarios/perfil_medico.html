@@ -1,0 +1,248 @@
+{% extends 'base_interna.html' %}
+
+{% block title %}Perfil Médico{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>
+                    <i class="fas fa-user-md text-success"></i> 
+                    Perfil do Dr(a). {{ user.get_full_name|default:user.username }}
+                </h2>
+                <div>
+                    {% if user.cargo == 'G' %}
+                    <a href="{% url 'admin_dashboard' %}" class="btn btn-primary">
+                        <i class="fas fa-cog"></i> Admin
+                    </a>
+                    {% endif %}
+                    <a href="{% url 'logout' %}" class="btn btn-outline-danger">
+                        <i class="fas fa-sign-out-alt"></i> Sair
+                    </a>
+                </div>
+            </div>
+            
+            <div class="row">
+                <!-- Informações Básicas -->
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            <h5><i class="fas fa-id-card"></i> Informações Básicas</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Nome:</strong> {{ user.get_full_name|default:user.username }}</p>
+                            <p><strong>Email:</strong> {{ user.email }}</p>
+                            <p><strong>Usuário:</strong> {{ user.username }}</p>
+                            {% if user.cpf %}
+                            <p><strong>CPF:</strong> {{ user.cpf }}</p>
+                            {% endif %}
+                            {% if user.telefone %}
+                            <p><strong>Telefone:</strong> {{ user.telefone }}</p>
+                            {% endif %}
+                            <p><strong>Cargo:</strong> 
+                                <span class="badge bg-success">Médico</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Dados Profissionais -->
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header bg-info text-white">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5><i class="fas fa-stethoscope"></i> Dados Profissionais</h5>
+                                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#editModal">
+                                    <i class="fas fa-edit"></i> Editar
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            {% if dados_medico %}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong>CRM:</strong> {{ dados_medico.crm }} - {{ dados_medico.uf_crm }}</p>
+                                        {% if dados_medico.get_especializacoes %}
+                                        <p><strong>Especializações:</strong><br>
+                                            <span class="text-muted">{{ dados_medico.get_especializacoes }}</span>
+                                        </p>
+                                        {% endif %}
+                                        {% if dados_medico.valor_consulta %}
+                                        <p><strong>Valor da Consulta:</strong> R$ {{ dados_medico.valor_consulta }}</p>
+                                        {% endif %}
+                                        <p><strong>Tempo de Consulta:</strong> {{ dados_medico.tempo_consulta }} minutos</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        {% if dados_medico.horario_inicio and dados_medico.horario_fim %}
+                                        <p><strong>Horário de Atendimento:</strong><br>
+                                            {{ dados_medico.horario_inicio }} às {{ dados_medico.horario_fim }}
+                                        </p>
+                                        {% endif %}
+                                        {% if dados_medico.get_dias_semana_display %}
+                                        <p><strong>Dias da Semana:</strong><br>
+                                            {{ dados_medico.get_dias_semana_display }}
+                                        </p>
+                                        {% endif %}
+                                        <p><strong>Status:</strong> 
+                                            {% if dados_medico.ativo %}
+                                                <span class="badge bg-success">Ativo</span>
+                                            {% else %}
+                                                <span class="badge bg-danger">Inativo</span>
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                {% if dados_medico.biografia %}
+                                <hr>
+                                <p><strong>Biografia:</strong></p>
+                                <p class="text-muted">{{ dados_medico.biografia }}</p>
+                                {% endif %}
+                                
+                                {% if dados_medico.formacao %}
+                                <hr>
+                                <p><strong>Formação:</strong></p>
+                                <p class="text-muted">{{ dados_medico.formacao }}</p>
+                                {% endif %}
+                                
+                                {% if dados_medico.experiencia %}
+                                <hr>
+                                <p><strong>Experiência:</strong></p>
+                                <p class="text-muted">{{ dados_medico.experiencia }}</p>
+                                {% endif %}
+                                
+                            {% else %}
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <strong>Dados profissionais não cadastrados!</strong><br>
+                                    Complete seu perfil médico para ter acesso completo ao sistema.
+                                    <br><br>
+                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal">
+                                        <i class="fas fa-plus"></i> Cadastrar Dados Profissionais
+                                    </button>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para editar dados -->
+<div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-edit"></i> 
+                    {% if dados_medico %}Editar{% else %}Cadastrar{% endif %} Dados Profissionais
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.crm.id_for_label }}" class="form-label">CRM *</label>
+                                {{ form.crm }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.uf_crm.id_for_label }}" class="form-label">UF do CRM *</label>
+                                {{ form.uf_crm }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.especializacoes.id_for_label }}" class="form-label">Especializações</label>
+                        {{ form.especializacoes }}
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.valor_consulta.id_for_label }}" class="form-label">Valor da Consulta</label>
+                                {{ form.valor_consulta }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.tempo_consulta.id_for_label }}" class="form-label">Tempo de Consulta (min)</label>
+                                {{ form.tempo_consulta }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="{{ form.horario_inicio.id_for_label }}" class="form-label">Início</label>
+                                {{ form.horario_inicio }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="{{ form.horario_fim.id_for_label }}" class="form-label">Fim</label>
+                                {{ form.horario_fim }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="{{ form.dias_semana.id_for_label }}" class="form-label">Dias da Semana</label>
+                                {{ form.dias_semana }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.biografia.id_for_label }}" class="form-label">Biografia</label>
+                        {{ form.biografia }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.formacao.id_for_label }}" class="form-label">Formação</label>
+                        {{ form.formacao }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.experiencia.id_for_label }}" class="form-label">Experiência</label>
+                        {{ form.experiencia }}
+                    </div>
+                    
+                    <div class="form-check">
+                        {{ form.ativo }}
+                        <label class="form-check-label" for="{{ form.ativo.id_for_label }}">
+                            Perfil ativo
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Salvar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.card-header {
+    border-radius: 10px 10px 0 0 !important;
+}
+</style>
+{% endblock %}

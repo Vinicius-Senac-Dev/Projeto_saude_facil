@@ -30,8 +30,8 @@
         <form method="post">
             {% csrf_token %}
             <div class="area_input">
-                <input class="area_texto" name="username_cpf" type="text" placeholder="Seu usuário ou CPF" required>
-                <input class="area_texto" name="email" type="email" placeholder="Seu e-mail cadastrado" required>
+                <input class="area_texto" name="username_cpf" type="text" placeholder="Usuário, Email ou CPF" required>
+                <input class="area_texto" name="email" type="email" placeholder="Confirme seu e-mail cadastrado" required>
             </div>
             
             <div class="link">
@@ -43,6 +43,22 @@
         </form>
     </div>
     <a href="#" class="img"><img src="{% static 'chat.svg' %}" alt="chat"></a>
+
+    <script>
+        // Auto-hide messages after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const messages = document.querySelectorAll('.mensagem');
+            messages.forEach(function(message) {
+                setTimeout(function() {
+                    message.style.opacity = '0';
+                    message.style.transform = 'translateY(-20px)';
+                    setTimeout(function() {
+                        message.remove();
+                    }, 300);
+                }, 5000);
+            });
+        });
+    </script>
 
 </body>
 </html>

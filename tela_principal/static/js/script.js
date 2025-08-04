@@ -42,3 +42,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+// Função para fechar mensagens
+function closeMessage(button) {
+  const message = button.parentElement;
+  message.style.opacity = '0';
+  message.style.transform = 'translateX(100%)';
+  setTimeout(() => {
+    message.remove();
+  }, 300);
+}
+
+// Auto-fechar mensagens após 5 segundos
+document.addEventListener('DOMContentLoaded', function() {
+  const messages = document.querySelectorAll('.message');
+  messages.forEach(function(message) {
+    setTimeout(function() {
+      message.style.opacity = '0';
+      message.style.transform = 'translateX(100%)';
+      setTimeout(function() {
+        message.remove();
+      }, 300);
+    }, 5000);
+  });
+});

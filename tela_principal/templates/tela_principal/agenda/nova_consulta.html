@@ -10,61 +10,59 @@
 
 {% block content %}
 <div class="form-container">
-  <form class="appointment-form">
+  <form class="appointment-form" method="post">
     {% csrf_token %}
+    
+    <!-- Mensagens de feedback -->
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    
     <div class="form-group">
-      <label for="especialidade">Especialidade</label>
-      <select id="especialidade" class="form-control" required>
+      <label for="especialidade">Especialidade *</label>
+      <select id="especialidade" name="especialidade" class="form-control" required>
         <option value="">Selecione uma especialidade</option>
         {% for especialidade in especialidades %}
-        <option value="{{ especialidade }}">{{ especialidade }}</option>
+        <option value="{{ especialidade.id }}">{{ especialidade.nome }}</option>
         {% endfor %}
       </select>
     </div>
 
     <div class="form-group">
-      <label for="medico">Médico</label>
-      <select id="medico" class="form-control" required disabled>
-        <option value="">Selecione um médico</option>
+      <label for="medico">Médico *</label>
+      <select id="medico" name="medico" class="form-control" required disabled>
+        <option value="">Primeiro selecione uma especialidade</option>
       </select>
     </div>
 
     <div class="form-group">
-      <label>Selecione uma data e horário disponíveis:</label>
-      <div class="calendar-selection">
-        <div class="date-picker">
-          <div class="month-selector">
-            <button type="button" id="prev-month" class="btn-month">&lt;</button>
-            <span id="current-month">Julho 2025</span>
-            <button type="button" id="next-month" class="btn-month">&gt;</button>
-          </div>
-          <div class="calendar">
-            <div class="weekdays">
-              <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
-            </div>
-            <div class="days" id="calendar-days">
-              <!-- Os dias serão preenchidos via JavaScript -->
-            </div>
-          </div>
-        </div>
+      <label for="data_consulta">Data da Consulta *</label>
+      <input type="date" id="data_consulta" name="data_consulta" class="form-control" required 
+             min="{{ today|date:'Y-m-d' }}" 
+             max="{{ max_date|date:'Y-m-d' }}">
+      <small class="form-text text-muted">Selecione uma data para ver os horários disponíveis</small>
+    </div>
 
-        <div class="time-slots">
-          <h4>Horários Disponíveis</h4>
-          <div class="time-slot-container" id="time-slots">
-            <p class="no-slots">Selecione uma data para ver os horários disponíveis</p>
-            <!-- Os horários serão preenchidos via JavaScript -->
-          </div>
-        </div>
+    <div class="form-group">
+      <label>Horários Disponíveis *</label>
+      <div class="time-slots" id="time-slots-container">
+        <p class="no-slots text-muted">Selecione um médico e uma data para ver os horários disponíveis</p>
       </div>
+      <input type="hidden" id="hora_consulta" name="hora_consulta" required>
     </div>
 
     <div class="form-group">
       <label for="motivo">Motivo da consulta</label>
-      <textarea id="motivo" class="form-control" rows="3" placeholder="Descreva brevemente o motivo da consulta"></textarea>
+      <textarea id="motivo" name="motivo" class="form-control" rows="3" 
+                placeholder="Descreva brevemente o motivo da consulta"></textarea>
     </div>
 
     <div class="form-group">
-      <label>Convênio</label>
+      <label>Convênio *</label>
       <div class="radio-group">
         <label>
           <input type="radio" name="convenio" value="sus" checked> SUS
@@ -80,23 +78,242 @@
 
     <div id="plano-container" class="form-group hidden">
       <label for="plano">Plano de Saúde</label>
-      <select id="plano" class="form-control">
+      <select id="plano" name="plano" class="form-control">
         <option value="">Selecione o plano</option>
         <option value="amil">Amil</option>
         <option value="unimed">Unimed</option>
         <option value="bradesco">Bradesco Saúde</option>
         <option value="sulamerica">SulAmérica</option>
+        <option value="outros">Outros</option>
       </select>
     </div>
 
     <div class="form-actions">
-      <button type="submit" class="btn btn-primary">Agendar Consulta</button>
-      <a href="{% url 'agenda_consultas' %}" class="btn btn-secondary">Cancelar</a>
+      <button type="submit" class="btn btn-primary" id="btn-agendar" disabled>
+        <i class="fas fa-calendar-plus"></i> Agendar Consulta
+      </button>
+      <a href="{% url 'agenda_consultas' %}" class="btn btn-secondary">
+        <i class="fas fa-times"></i> Cancelar
+      </a>
     </div>
   </form>
 </div>
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/agenda/nova_consulta.js' %}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const especialidadeSelect = document.getElementById('especialidade');
+    const medicoSelect = document.getElementById('medico');
+    const dataInput = document.getElementById('data_consulta');
+    const timeSlotsContainer = document.getElementById('time-slots-container');
+    const horaInput = document.getElementById('hora_consulta');
+    const btnAgendar = document.getElementById('btn-agendar');
+    const planoContainer = document.getElementById('plano-container');
+    const convenioRadios = document.querySelectorAll('input[name="convenio"]');
+    
+    // Configurar data mínima e máxima
+    const today = new Date();
+    const maxDate = new Date();
+    maxDate.setDate(today.getDate() + 30); // 30 dias à frente
+    
+    dataInput.min = today.toISOString().split('T')[0];
+    dataInput.max = maxDate.toISOString().split('T')[0];
+    
+    // Função para buscar médicos por especialidade
+    especialidadeSelect.addEventListener('change', function() {
+        const especialidadeId = this.value;
+        
+        // Resetar campos dependentes
+        medicoSelect.innerHTML = '<option value="">Carregando médicos...</option>';
+        medicoSelect.disabled = true;
+        resetTimeSlots();
+        
+        if (especialidadeId) {
+            fetch(`{% url 'buscar_medicos_por_especialidade' %}?especialidade_id=${especialidadeId}`)
+                .then(response => response.json())
+                .then(data => {
+                    medicoSelect.innerHTML = '<option value="">Selecione um médico</option>';
+                    
+                    if (data.medicos && data.medicos.length > 0) {
+                        data.medicos.forEach(medico => {
+                            const option = document.createElement('option');
+                            option.value = medico.id;
+                            option.textContent = medico.nome;
+                            medicoSelect.appendChild(option);
+                        });
+                        medicoSelect.disabled = false;
+                    } else {
+                        medicoSelect.innerHTML = '<option value="">Nenhum médico encontrado para esta especialidade</option>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao buscar médicos:', error);
+                    medicoSelect.innerHTML = '<option value="">Erro ao carregar médicos</option>';
+                });
+        } else {
+            medicoSelect.innerHTML = '<option value="">Primeiro selecione uma especialidade</option>';
+            medicoSelect.disabled = true;
+        }
+    });
+    
+    // Função para buscar horários disponíveis
+    function buscarHorarios() {
+        const medicoId = medicoSelect.value;
+        const data = dataInput.value;
+        
+        if (medicoId && data) {
+            timeSlotsContainer.innerHTML = '<p class="text-muted">Carregando horários...</p>';
+            
+            fetch(`{% url 'buscar_horarios_disponiveis' %}?medico_id=${medicoId}&data=${data}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.horarios && data.horarios.length > 0) {
+                        let html = '<div class="time-grid">';
+                        data.horarios.forEach(horario => {
+                            html += `<button type="button" class="time-slot" data-hora="${horario.hora}">${horario.hora_formatada}</button>`;
+                        });
+                        html += '</div>';
+                        timeSlotsContainer.innerHTML = html;
+                        
+                        // Adicionar eventos aos botões de horário
+                        document.querySelectorAll('.time-slot').forEach(btn => {
+                            btn.addEventListener('click', function() {
+                                // Remover seleção anterior
+                                document.querySelectorAll('.time-slot').forEach(b => b.classList.remove('selected'));
+                                // Selecionar atual
+                                this.classList.add('selected');
+                                horaInput.value = this.dataset.hora;
+                                validateForm();
+                            });
+                        });
+                    } else {
+                        const message = data.message || 'Nenhum horário disponível para esta data';
+                        timeSlotsContainer.innerHTML = `<p class="text-muted">${message}</p>`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao buscar horários:', error);
+                    timeSlotsContainer.innerHTML = '<p class="text-danger">Erro ao carregar horários</p>';
+                });
+        } else {
+            resetTimeSlots();
+        }
+    }
+    
+    // Event listeners para buscar horários
+    medicoSelect.addEventListener('change', buscarHorarios);
+    dataInput.addEventListener('change', buscarHorarios);
+    
+    // Função para resetar horários
+    function resetTimeSlots() {
+        timeSlotsContainer.innerHTML = '<p class="no-slots text-muted">Selecione um médico e uma data para ver os horários disponíveis</p>';
+        horaInput.value = '';
+        validateForm();
+    }
+    
+    // Validação do formulário
+    function validateForm() {
+        const isValid = especialidadeSelect.value && 
+                       medicoSelect.value && 
+                       dataInput.value && 
+                       horaInput.value;
+        btnAgendar.disabled = !isValid;
+    }
+    
+    // Mostrar/ocultar campo do plano de saúde
+    convenioRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.value === 'plano') {
+                planoContainer.classList.remove('hidden');
+                document.getElementById('plano').required = true;
+            } else {
+                planoContainer.classList.add('hidden');
+                document.getElementById('plano').required = false;
+                document.getElementById('plano').value = '';
+            }
+        });
+    });
+    
+    // Validação inicial
+    validateForm();
+});
+</script>
+
+<style>
+.hidden {
+    display: none;
+}
+
+.messages {
+    margin-bottom: 20px;
+}
+
+.alert {
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-error, .alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.time-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.time-slot {
+    padding: 8px 12px;
+    border: 2px solid #ddd;
+    background: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.time-slot:hover {
+    border-color: #007bff;
+    background-color: #f8f9fa;
+}
+
+.time-slot.selected {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.radio-group {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+</style>
 {% endblock %}

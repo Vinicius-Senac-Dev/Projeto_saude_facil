@@ -26,9 +26,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rolepermissions',
     'tela_principal',
     'historico',
     'tela_login',
+    'usuarios',
 ]
 
 MIDDLEWARE = [
@@ -117,11 +119,23 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Configuração do modelo de usuário personalizado
+AUTH_USER_MODEL = 'usuarios.Users'
+
+# Configuração do sistema de roles
+ROLEPERMISSIONS_MODULE = 'roles'
+
 # Configurações de email para recuperação de senha
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'  # Substitua pelo seu servidor SMTP
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'seuapp@gmail.com'  # Substitua pelo seu e-mail
-EMAIL_HOST_PASSWORD = 'suasenha'  # Substitua pela sua senha
-DEFAULT_FROM_EMAIL = 'SaudeFacil <seuapp@gmail.com>'  # Substitua pelo seu e-mail
+# Para desenvolvimento: use console backend (emails aparecem no terminal)
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    # Para produção: use SMTP real
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = 'smtp.gmail.com'
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
+    EMAIL_HOST_USER = 'saudefacil.sistema@gmail.com'  # Crie este email
+    EMAIL_HOST_PASSWORD = 'sua_senha_de_app'  # Use senha de app do Gmail
+
+DEFAULT_FROM_EMAIL = 'SaudeFacil <saudefacil.sistema@gmail.com>'

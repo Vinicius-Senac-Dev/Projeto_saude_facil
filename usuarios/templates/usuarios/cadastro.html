@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inder&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/cadastro.css' %}">
+    <title>Cadastro - Saúde Fácil</title>
+</head>
+<body>
+    <!-- Área para mensagens do Django -->
+    {% if messages %}
+    <div class="mensagens">
+        {% for message in messages %}
+            <div class="mensagem {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="area__cadastro">
+        <img class="img__cadastro" src="{% static 'img/cadastro.svg' %}" alt="cadastro">
+        <h1 class="titulo">Cadastro</h1>
+        
+        <form method="post">
+            {% csrf_token %}
+            <div class="area__input">
+                <input class="area__texto" name="first_name" type="text" placeholder="Nome" required>
+                <input class="area__texto" name="last_name" type="text" placeholder="Sobrenome" required>
+                <input class="area__texto" name="username" type="text" placeholder="Nome de usuário" required>
+                <input class="area__texto" name="cpf" type="text" placeholder="CPF (opcional)" maxlength="14">
+                <input class="area__texto" name="email" type="email" placeholder="Seu email" required>
+                <input class="area__texto" name="senha" type="password" placeholder="Sua senha" required minlength="6">
+                <input class="area__texto" name="confirmar_senha" type="password" placeholder="Confirme a senha" required>
+                <input class="area__texto" name="celular" type="tel" placeholder="Celular (opcional)">
+            </div>
+            
+            <div class="area__checkbox">
+                <input class="area__check" name="termos" type="checkbox" id="termos" required>
+                <label for="termos" class="texto">Aceito os termos e condições de uso</label>
+            </div>
+            
+            <div class="area__botao">
+                <button type="submit" class="botao">Cadastrar</button>
+                <a href="{% url 'login' %}" class="botao botao-secundario">Voltar ao Login</a>
+            </div>
+        </form>
+    </div>
+    
+    <a href="#" class="img"><img src="{% static 'img/chat.svg' %}" alt="chat"></a>
+
+    <script>
+        // Auto-hide messages after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const messages = document.querySelectorAll('.mensagem');
+            messages.forEach(function(message) {
+                setTimeout(function() {
+                    message.style.opacity = '0';
+                    message.style.transform = 'translateY(-20px)';
+                    setTimeout(function() {
+                        message.remove();
+                    }, 300);
+                }, 5000);
+            });
+        });
+
+        // Formatação do CPF
+        document.querySelector('input[name="cpf"]').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            e.target.value = value;
+        });
+
+        // Formatação do celular
+        document.querySelector('input[name="celular"]').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.replace(/(\d{2})(\d)/, '($1) $2');
+            value = value.replace(/(\d{5})(\d)/, '$1-$2');
+            e.target.value = value;
+        });
+    </script>
+</body>
+</html>

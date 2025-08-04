@@ -7,7 +7,6 @@ from rolepermissions.roles import assign_role
 #assign_role vai definir qual é a permissão que ele tem.
 
 @receiver(post_save, sender=Users)
-
 def define_permissoes(sender, instance, created, **kwargs):
     if created:
         if instance.cargo == "R":
@@ -16,3 +15,5 @@ def define_permissoes(sender, instance, created, **kwargs):
             assign_role(instance, 'gerente')
         elif instance.cargo == 'M':
             assign_role(instance, 'medico')
+        elif instance.cargo == 'P':
+            assign_role(instance, 'paciente')

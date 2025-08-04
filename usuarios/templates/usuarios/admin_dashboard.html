@@ -1,0 +1,145 @@
+{% extends 'base_interna.html' %}
+
+{% block title %}Dashboard Administrativo{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Dashboard Administrativo</h2>
+            <p class="text-muted">Gerencie especializações médicas e dados dos profissionais</p>
+            
+            <!-- Cards de estatísticas -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h4>{{ total_medicos }}</h4>
+                                    <p class="mb-0">Médicos</p>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-user-md fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h4>{{ medicos_com_dados }}</h4>
+                                    <p class="mb-0">Com Dados</p>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-check-circle fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="card bg-info text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h4>{{ total_especializacoes }}</h4>
+                                    <p class="mb-0">Especializações</p>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-stethoscope fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <div class="card bg-warning text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h4>{{ total_pacientes }}</h4>
+                                    <p class="mb-0">Pacientes</p>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-users fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Menu de ações -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-stethoscope"></i> Gerenciar Especializações</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Adicione, edite ou remova especializações médicas disponíveis no sistema.</p>
+                            <div class="d-grid gap-2">
+                                <a href="{% url 'listar_especializacoes' %}" class="btn btn-primary">
+                                    <i class="fas fa-list"></i> Ver Especializações
+                                </a>
+                                <a href="{% url 'criar_especializacao' %}" class="btn btn-success">
+                                    <i class="fas fa-plus"></i> Nova Especialização
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-user-md"></i> Gerenciar Médicos</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Cadastre médicos e gerencie seus dados profissionais e especializações.</p>
+                            <div class="d-grid gap-2">
+                                <a href="{% url 'listar_medicos' %}" class="btn btn-primary">
+                                    <i class="fas fa-list"></i> Ver Médicos
+                                </a>
+                                <a href="{% url 'criar_medico' %}" class="btn btn-success">
+                                    <i class="fas fa-plus"></i> Cadastrar Médico
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 10px 10px 0 0 !important;
+}
+
+.btn {
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.fa-2x {
+    font-size: 2em;
+}
+</style>
+{% endblock %}

@@ -126,6 +126,30 @@ main {
   align-items: center;
 }
 
+/* Estilos para content-area (quando usando base_interna.html) */
+.content-area {
+  padding: 20px;
+  min-height: calc(100vh - 140px);
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.page-header h1 {
+  color: #333;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.content-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
 .carousel {
   width: 100%;
   max-width: 800px;
@@ -209,5 +233,96 @@ main {
     margin-top: 10px;
     width: 100%;
     text-align: center;
+  }
+}
+
+/* Estilos para mensagens do Django */
+.messages-container {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 9999;
+  max-width: 400px;
+}
+
+.message {
+  padding: 15px 20px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  animation: slideInRight 0.3s ease-out;
+  transition: all 0.3s ease;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.message.success {
+  background-color: #4caf50;
+  color: white;
+  border-left: 4px solid #388e3c;
+}
+
+.message.error {
+  background-color: #f44336;
+  color: white;
+  border-left: 4px solid #d32f2f;
+}
+
+.message.warning {
+  background-color: #ff9800;
+  color: white;
+  border-left: 4px solid #f57c00;
+}
+
+.message.info {
+  background-color: #2196f3;
+  color: white;
+  border-left: 4px solid #1976d2;
+}
+
+.message-text {
+  flex: 1;
+  font-weight: 500;
+}
+
+.close-message {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: 15px;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.close-message:hover {
+  opacity: 1;
+}
+
+/* Responsividade para mensagens */
+@media (max-width: 768px) {
+  .messages-container {
+    top: 70px;
+    right: 10px;
+    left: 10px;
+    max-width: none;
+  }
+  
+  .message {
+    padding: 12px 15px;
+    font-size: 14px;
   }
 }
