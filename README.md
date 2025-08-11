@@ -121,4 +121,4 @@ Este projeto está sob a licença MIT.
 
 ---
 
-**Saúde Fácil** &copy; {% now "Y"
+**Saúde Fácil** &copy;
