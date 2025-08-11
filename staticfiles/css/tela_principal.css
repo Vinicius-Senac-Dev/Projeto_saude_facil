@@ -1,0 +1,328 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #eee;
+}
+
+header {
+  background-color: #b2f0f0;
+  padding: 10px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 20px;
+  color: #333;
+}
+
+.menu-toggle {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+nav {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.menu-item {
+  position: relative;
+}
+
+nav a {
+  text-decoration: none;
+  color: black;
+  font-weight: 500;
+  padding: 8px 12px;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+nav a:hover {
+  background-color: rgba(0,0,0,0.05);
+}
+
+nav a.active {
+  color: #1a73e8;
+  font-weight: 600;
+  background-color: rgba(26, 115, 232, 0.1);
+}
+
+.submenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 6px;
+  z-index: 1000;
+  min-width: 200px;
+}
+
+.submenu a {
+  padding: 10px;
+  white-space: nowrap;
+}
+
+.menu-item:hover .submenu {
+  display: block;
+}
+
+.welcome-message {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-left: auto;
+  padding-left: 20px;
+}
+
+.icons {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-left: 20px;
+}
+
+.profile-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #ccc;
+}
+
+.profile-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+main {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Estilos para content-area (quando usando base_interna.html) */
+.content-area {
+  padding: 20px;
+  min-height: calc(100vh - 140px);
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.page-header h1 {
+  color: #333;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.content-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.carousel {
+  width: 100%;
+  max-width: 800px;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  position: relative;
+}
+
+.carousel img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  z-index: 0;
+}
+
+.carousel img.active {
+  opacity: 1;
+  z-index: 1;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  nav {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background: #b2f0f0;
+    padding: 10px 0;
+  }
+
+  nav.show {
+    display: flex;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  nav {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+    padding: 10px 0;
+  }
+  
+  nav.show {
+    display: flex;
+  }
+  
+  .menu-toggle {
+    display: block;
+  }
+  
+  .menu-item {
+    width: 100%;
+  }
+  
+  .submenu {
+    position: relative;
+    width: 100%;
+    box-shadow: none;
+  }
+
+  .carousel {
+    height: 200px;
+  }
+
+  .welcome-message {
+    margin-left: 0;
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Estilos para mensagens do Django */
+.messages-container {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 9999;
+  max-width: 400px;
+}
+
+.message {
+  padding: 15px 20px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  animation: slideInRight 0.3s ease-out;
+  transition: all 0.3s ease;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.message.success {
+  background-color: #4caf50;
+  color: white;
+  border-left: 4px solid #388e3c;
+}
+
+.message.error {
+  background-color: #f44336;
+  color: white;
+  border-left: 4px solid #d32f2f;
+}
+
+.message.warning {
+  background-color: #ff9800;
+  color: white;
+  border-left: 4px solid #f57c00;
+}
+
+.message.info {
+  background-color: #2196f3;
+  color: white;
+  border-left: 4px solid #1976d2;
+}
+
+.message-text {
+  flex: 1;
+  font-weight: 500;
+}
+
+.close-message {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: 15px;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.close-message:hover {
+  opacity: 1;
+}
+
+/* Responsividade para mensagens */
+@media (max-width: 768px) {
+  .messages-container {
+    top: 70px;
+    right: 10px;
+    left: 10px;
+    max-width: none;
+  }
+  
+  .message {
+    padding: 12px 15px;
+    font-size: 14px;
+  }
+}

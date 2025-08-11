@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Inder&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+:root{
+    --cor-de-fundo: #EBEBEB;
+    --cor-cabecalho: #ADEBEB;
+    --cor-agenda: #D0E4E4;
+    --cor-botao: #10C510;
+    --cor-texto: #000000;
+}
+
+body{
+    background-color: var(--cor-de-fundo);
+    font-family: 'Inder';
+    font-weight: 400;
+}
+
+.cabecalho{
+    background-color: var(--cor-cabecalho);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.conteiner{
+    margin: 1em 2em 0 10em;
+    
+}
+
+.link{
+    padding: 1em;
+    text-decoration: none;
+    color: #000000;
+    font-size: 20px;   
+}
+
+.link:hover{
+    font-weight: 700;
+}
+
+
+.img_link{
+    width: 29px;
+    padding: 0.3em;
+}
+
+
+
+.agenda{
+    border: 1px solid #000000;
+    border-radius: 5px;
+    overflow: hidden;
+    font-family: 'Inder';
+    font-weight: 400;
+    width: 90%;
+    margin: 11em 4em;
+}
+
+.agenda_agenda{
+    background-color: #D0E4E4;
+    padding: 45px;
+    text-align: center;
+    font-weight: 400;
+    
+}
+
+table{
+    border-collapse: collapse;
+    background-color: #D0E4E4;
+    width: 100%;
+
+}
+
+table th{
+    border: 1px solid #000000;
+    background-color: #D0E4E4;
+    padding: 50px;
+}
+
+.botao{
+    background-color: var(--cor-botao);
+    color: var(--cor-texto);
+    padding: 5px 7px 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+
+}

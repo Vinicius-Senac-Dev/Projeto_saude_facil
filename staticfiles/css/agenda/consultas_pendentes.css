@@ -1,0 +1,134 @@
+.consultas-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.consultas-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.consultas-table th,
+.consultas-table td {
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.consultas-table th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.consultas-table td {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.consultas-table tr:hover {
+  background-color: #f2f2f2;
+}
+
+.acoes {
+  display: flex;
+  gap: 10px;
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 0;
+  border: 1px solid #888;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  padding: 15px;
+  border-bottom: 1px solid #dee2e6;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h3 {
+  margin: 0;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.modal-footer {
+  padding: 15px;
+  border-top: 1px solid #dee2e6;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.close {
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+}
+
+.detalhe-item {
+  margin-bottom: 15px;
+}
+
+.detalhe-item .label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.detalhe-item .valor {
+  display: block;
+}
+
+.actions-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .acoes {
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .modal-content {
+    width: 95%;
+    margin: 5% auto;
+  }
+  
+  .consultas-table {
+    display: block;
+    overflow-x: auto;
+  }
+}

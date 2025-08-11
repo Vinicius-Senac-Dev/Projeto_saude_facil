@@ -1,0 +1,149 @@
+.agenda-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Estilização das próximas consultas */
+.upcoming-appointments {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.upcoming-appointments li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  border-left: 4px solid #1F689C;
+}
+
+.appointment-date {
+  font-weight: bold;
+  color: #1F689C;
+  min-width: 140px;
+}
+
+.appointment-details {
+  flex-grow: 1;
+  padding: 0 15px;
+}
+
+.appointment-details .specialty {
+  font-weight: bold;
+}
+
+.appointment-details .doctor {
+  color: #666;
+}
+
+.appointment-actions {
+  display: flex;
+  gap: 5px;
+}
+
+/* Estilização do calendário */
+.calendar-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.current-month {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.prev-month, .next-month {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #1F689C;
+}
+
+.calendar {
+  width: 100%;
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.weekdays div {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.days .day {
+  height: 50px;
+  border: 1px solid #ddd;
+  text-align: center;
+  padding-top: 10px;
+  cursor: pointer;
+  position: relative;
+}
+
+.days .day:hover {
+  background-color: #f0f0f0;
+}
+
+.days .day.today {
+  background-color: #e6f7ff;
+  border-color: #1F689C;
+  color: #1F689C;
+  font-weight: bold;
+}
+
+.days .day.has-appointment::after {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #1F689C;
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .appointment-date {
+    min-width: auto;
+  }
+  
+  .appointment-actions {
+    flex-direction: column;
+  }
+  
+  .upcoming-appointments li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .appointment-details {
+    margin: 10px 0;
+    padding: 0;
+  }
+}
